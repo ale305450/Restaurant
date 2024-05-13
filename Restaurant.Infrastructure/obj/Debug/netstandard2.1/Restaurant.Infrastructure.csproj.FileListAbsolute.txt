@@ -1,0 +1,9 @@
+C:\Users\Ali\source\repos\Restaurant\Restaurant.Infrastructure\bin\Debug\netstandard2.1\Restaurant.Infrastructure.deps.json
+C:\Users\Ali\source\repos\Restaurant\Restaurant.Infrastructure\bin\Debug\netstandard2.1\Restaurant.Infrastructure.dll
+C:\Users\Ali\source\repos\Restaurant\Restaurant.Infrastructure\bin\Debug\netstandard2.1\Restaurant.Infrastructure.pdb
+C:\Users\Ali\source\repos\Restaurant\Restaurant.Infrastructure\obj\Debug\netstandard2.1\Restaurant.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ali\source\repos\Restaurant\Restaurant.Infrastructure\obj\Debug\netstandard2.1\Restaurant.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Ali\source\repos\Restaurant\Restaurant.Infrastructure\obj\Debug\netstandard2.1\Restaurant.Infrastructure.AssemblyInfo.cs
+C:\Users\Ali\source\repos\Restaurant\Restaurant.Infrastructure\obj\Debug\netstandard2.1\Restaurant.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Ali\source\repos\Restaurant\Restaurant.Infrastructure\obj\Debug\netstandard2.1\Restaurant.Infrastructure.dll
+C:\Users\Ali\source\repos\Restaurant\Restaurant.Infrastructure\obj\Debug\netstandard2.1\Restaurant.Infrastructure.pdb
