@@ -37,17 +37,18 @@ namespace Restaurant.Application.Features.BlogPosts.Handlers.Commands
                 response.Message = "BlogPost update failed";
                 response.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
             }
+            else
+            {
+                var blogPost = await _blogPostRepository.Get(request.UpdateBlogPostDto.Id);
 
-            var blogPost = await _blogPostRepository.Get(request.UpdateBlogPostDto.Id);
+                _mapper.Map(request.UpdateBlogPostDto, blogPost);
 
-            _mapper.Map(request.UpdateBlogPostDto, blogPost);
+                await _blogPostRepository.Update(blogPost);
 
-            await _blogPostRepository.Update(blogPost);
-
-            response.Success = true;
-            response.Message = "BlogPost updated successfully";
-            response.Id = blogPost.Id;
-
+                response.Success = true;
+                response.Message = "BlogPost updated successfully";
+                response.Id = blogPost.Id;
+            }
             return response;
         }
 

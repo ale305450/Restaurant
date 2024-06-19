@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.DTOs.User;
 using Restaurant.Application.Features.Users.Requests.Commands;
 using Restaurant.Application.Features.Users.Requests.Queries;
+using Restaurant.Application.Responses;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,9 +13,9 @@ namespace Restaurant.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly Mediator _mediator;
+        private readonly IMediator _mediator;
 
-        public UserController(Mediator mediator)
+        public UserController(IMediator mediator)
         {
             this._mediator = mediator;
         }
@@ -36,7 +37,9 @@ namespace Restaurant.Api.Controllers
 
         // POST api/<UserController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateUserDto userDto)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateUserDto userDto)
         {
             var command = await _mediator.Send(new CreateUserCommand { CreateUserDto = userDto });
             return Ok(command);
@@ -44,7 +47,7 @@ namespace Restaurant.Api.Controllers
 
         // PUT api/<UserController>
         [HttpPut]
-        public async Task<ActionResult> Put([FromBody] UpdateUserDto userDto)
+        public async Task<ActionResult<BaseCommandResponse>> Put([FromBody] UpdateUserDto userDto)
         {
             var command = await _mediator.Send(new UpdateUserCommand { UpdateUserDto = userDto });
             return Ok(command);

@@ -45,28 +45,30 @@ namespace Restaurant.Application.Features.Reservations.Handlers.Commands
                 response.Message = "Reservation creation failed";
                 response.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
             }
-
-            var reservation = _mapper.Map<Reservation>(request.CreateReservationDto);
-
-            reservation = await _reservationRepository.Add(reservation);
-
-            response.Success = true;
-            response.Message = "Reservation created successfully";
-            response.Id = reservation.Id;
-
-            var email = new Email
+            else
             {
-                To = "",
-                Body = $" Your reservation is in {request.CreateReservationDto.Date}  at {request.CreateReservationDto.Time}",
-                Subject = "Table reservation"
-            };
-            try
-            {
-                await _emailSender.SendEmail(email);
-            }
-            catch (Exception ex)
-            {
+                var reservation = _mapper.Map<Reservation>(request.CreateReservationDto);
 
+                reservation = await _reservationRepository.Add(reservation);
+
+                response.Success = true;
+                response.Message = "Reservation created successfully";
+                response.Id = reservation.Id;
+
+                var email = new Email
+                {
+                    To = "",
+                    Body = $" Your reservation is in {request.CreateReservationDto.Date}  at {request.CreateReservationDto.Time}",
+                    Subject = "Table reservation"
+                };
+                try
+                {
+                    await _emailSender.SendEmail(email);
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
             return response;
         }

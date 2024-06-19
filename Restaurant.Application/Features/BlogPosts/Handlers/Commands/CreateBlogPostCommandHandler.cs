@@ -39,14 +39,16 @@ namespace Restaurant.Application.Features.BlogPosts.Handlers.Commands
                 response.Message = "BlogPost creation failed";
                 response.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
             }
+            else
+            {
+                var blogPost = _mapper.Map<BlogPost>(request.CreateBlogPostDto);
 
-            var blogPost = _mapper.Map<BlogPost>(request.CreateBlogPostDto);
+                blogPost = await _blogPostRepository.Add(blogPost);
 
-            blogPost = await _blogPostRepository.Add(blogPost);
-
-            response.Success = true;
-            response.Message = "BlogPost created successfully";
-            response.Id = blogPost.Id;
+                response.Success = true;
+                response.Message = "BlogPost created successfully";
+                response.Id = blogPost.Id;
+            }
 
             return response;
         }

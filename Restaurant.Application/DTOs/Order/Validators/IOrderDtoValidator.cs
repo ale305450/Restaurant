@@ -19,7 +19,7 @@ namespace Restaurant.Application.DTOs.Order.Validators
                 .LessThan(10).WithMessage("{PropertyName} must not be above {ComparisonValue} itmes")
                 .GreaterThan(0).WithMessage("{PropertyName} must not be less than {ComparisonValue} itmes");
 
-            RuleFor(o => o.ItemId)
+            RuleFor(o => o.MenuItemId)
                 .MustAsync(async (id, token) =>
                 {
                     var menuItemExists = await _menuItemRepository.Exists(id);

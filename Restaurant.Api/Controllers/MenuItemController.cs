@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.DTOs.MenuItem;
 using Restaurant.Application.Features.MenuItems.Requests.Commands;
 using Restaurant.Application.Features.MenuItems.Requests.Queries;
+using Restaurant.Application.Responses;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,9 +13,9 @@ namespace Restaurant.Api.Controllers
     [ApiController]
     public class MenuItemController : ControllerBase
     {
-        private readonly Mediator _mediator;
+        private readonly IMediator _mediator;
 
-        public MenuItemController(Mediator mediator)
+        public MenuItemController(IMediator mediator)
         {
             this._mediator = mediator;
         }
@@ -36,7 +37,9 @@ namespace Restaurant.Api.Controllers
 
         // POST api/<MenuItemController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateMenuItemDto itemDto)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateMenuItemDto itemDto)
         {
             var command = await _mediator.Send(new CreateMenuItemCommand { CreateMenuItemDto = itemDto });
             return Ok(command);
@@ -44,7 +47,7 @@ namespace Restaurant.Api.Controllers
 
         // PUT api/<MenuItemController>
         [HttpPut]
-        public async Task<ActionResult> Put([FromBody] UpdateMenuItemDto itemDto)
+        public async Task<ActionResult<BaseCommandResponse>> Put([FromBody] UpdateMenuItemDto itemDto)
         {
             var command = await _mediator.Send(new UpdateMenuItemCommand { UpdateMenuItemDto = itemDto });
             return Ok(command);

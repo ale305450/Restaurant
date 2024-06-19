@@ -12,7 +12,7 @@ using Restaurant.Presistence;
 namespace Restaurant.Presistence.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    [Migration("20240508173058_IntialTables")]
+    [Migration("20240604160732_IntialTables")]
     partial class IntialTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,9 +88,6 @@ namespace Restaurant.Presistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
                     b.Property<int>("MenuItemId")
                         .HasColumnType("int");
 
@@ -154,9 +151,6 @@ namespace Restaurant.Presistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
 
                     b.Property<int>("MenuItemId")
                         .HasColumnType("int");

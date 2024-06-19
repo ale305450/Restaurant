@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.DTOs.Reservation;
 using Restaurant.Application.Features.Reservations.Requests.Commands;
 using Restaurant.Application.Features.Reservations.Requests.Queries;
+using Restaurant.Application.Responses;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,9 +13,9 @@ namespace Restaurant.Api.Controllers
     [ApiController]
     public class ReservationController : ControllerBase
     {
-        private readonly Mediator _mediator;
+        private readonly IMediator _mediator;
 
-        public ReservationController(Mediator mediator)
+        public ReservationController(IMediator mediator)
         {
             this._mediator = mediator;
         }
@@ -36,7 +37,9 @@ namespace Restaurant.Api.Controllers
 
         // POST api/<ReservationController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateReservationDto reservationDto)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateReservationDto reservationDto)
         {
             var command = await _mediator.Send(new CreateReservationCommand { CreateReservationDto = reservationDto });
             return Ok(command);
@@ -44,7 +47,7 @@ namespace Restaurant.Api.Controllers
 
         // PUT api/<ReservationController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] UpdateReservationDto reservationDto)
+        public async Task<ActionResult<BaseCommandResponse>> Put(int id, [FromBody] UpdateReservationDto reservationDto)
         {
             var command = await _mediator.Send(new UpdateReservationCommand { Id = id, UpdateReservationDto = reservationDto });
             return Ok(command);

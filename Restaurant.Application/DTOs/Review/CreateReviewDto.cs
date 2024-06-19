@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Restaurant.Application.DTOs.Review
 {
-    public class CreateReviewDto 
+    public class CreateReviewDto : IReviewDto
     {
         public int UserId { get; set; }
-        public int ItemId { get; set; }
+        public int MenuItemId { get; set; }
         public int Rating { get; set; }
     }
 }

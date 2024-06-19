@@ -9,3 +9,4 @@ C:\Users\Ali\source\repos\Restaurant\Restaurant.Domain\obj\Debug\net6.0\Restaura
 C:\Users\Ali\source\repos\Restaurant\Restaurant.Domain\obj\Debug\net6.0\Restaurant.Domain.dll
 C:\Users\Ali\source\repos\Restaurant\Restaurant.Domain\obj\Debug\net6.0\ref\Restaurant.Domain.dll
 C:\Users\Ali\source\repos\Restaurant\Restaurant.Domain\obj\Debug\net6.0\Restaurant.Domain.pdb
+C:\Users\Ali\source\repos\Restaurant\Restaurant.Domain\obj\Debug\net6.0\Restaurant.Domain.csproj.AssemblyReference.cache

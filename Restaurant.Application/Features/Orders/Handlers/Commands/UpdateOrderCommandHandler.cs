@@ -43,24 +43,25 @@ namespace Restaurant.Application.Features.Orders.Handlers.Commands
                 response.Message = "Order update failed";
                 response.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
             }
-
-            var order = await _orderRepository.Get(request.Id);
-
-            if (request.UpdateOrderDto != null)
+            else
             {
-                _mapper.Map(request.UpdateOrderDto, order);
+                var order = await _orderRepository.Get(request.Id);
 
-                await _orderRepository.Update(order);
+                if (request.UpdateOrderDto != null)
+                {
+                    _mapper.Map(request.UpdateOrderDto, order);
+
+                    await _orderRepository.Update(order);
+                }
+                else if (request.ChangeOrderStatusDto != null)
+                {
+                    await _orderRepository.ChangeOrderStatus(order, request.ChangeOrderStatusDto.Status);
+                }
+
+                response.Success = true;
+                response.Message = "Order updated successfully";
+                response.Id = order.Id;
             }
-            else if (request.ChangeOrderStatusDto != null)
-            {
-                await _orderRepository.ChangeOrderStatus(order, request.ChangeOrderStatusDto.Status);
-            }
-
-            response.Success = true;
-            response.Message = "Order updated successfully";
-            response.Id = order.Id;
-
             return response;
         }
     }

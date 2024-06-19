@@ -7,10 +7,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Restaurant.Application.Responses;
+using Restaurant.Application.DTOs.Review.Validators;
+using System.Linq;
 
 namespace Restaurant.Application.Features.Reviews.Handlers.Commands
 {
-    public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand, Unit>
+    public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand, BaseCommandResponse>
     {
         private readonly IReviewRepository _reviewRepository;
         private readonly IMapper _mapper;
@@ -21,15 +24,34 @@ namespace Restaurant.Application.Features.Reviews.Handlers.Commands
             _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(UpdateReviewCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(UpdateReviewCommand request, CancellationToken cancellationToken)
         {
-            var review = await _reviewRepository.Get(request.UpdateReviewDto.Id);
+            var response = new BaseCommandResponse();
 
-            _mapper.Map(request.UpdateReviewDto, review);
+            var validator = new UpdateReviewDtoValidator();
 
-            await _reviewRepository.Update(review);
+            var validationResult = await validator.ValidateAsync(request.UpdateReviewDto);
 
-            return Unit.Value;
+            if (validationResult.IsValid == false)
+            {
+                response.Success = false;
+                response.Message = "Change item rating failed";
+                response.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+            }
+            else
+            {
+                var review = await _reviewRepository.Get(request.UpdateReviewDto.Id);
+
+                _mapper.Map(request.UpdateReviewDto, review);
+
+                await _reviewRepository.Update(review);
+
+
+                response.Success = true;
+                response.Message = "item rating changed successfully";
+                response.Id = review.Id;
+            }
+            return response;
         }
     }
 }

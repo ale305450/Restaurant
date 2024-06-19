@@ -38,15 +38,16 @@ namespace Restaurant.Application.Features.MenuItems.Handlers.Commands
                 response.Message = "MenuItem creation failed";
                 response.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
             }
+            else
+            {
+                var menuItem = _mapper.Map<MenuItem>(request.CreateMenuItemDto);
 
-            var menuItem = _mapper.Map<MenuItem>(request.CreateMenuItemDto);
+                menuItem = await _menuItemRepository.Add(menuItem);
 
-            menuItem = await _menuItemRepository.Add(menuItem);
-
-            response.Success = true;
-            response.Message = "MenuItem created successfully";
-            response.Id = menuItem.Id;
-
+                response.Success = true;
+                response.Message = "MenuItem created successfully";
+                response.Id = menuItem.Id;
+            }
             return response;
         }
     }

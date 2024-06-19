@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.DTOs.Review;
 using Restaurant.Application.Features.Reviews.Requests.Commands;
 using Restaurant.Application.Features.Reviews.Requests.Queries;
+using Restaurant.Application.Responses;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,9 +13,9 @@ namespace Restaurant.Api.Controllers
     [ApiController]
     public class ReviewController : ControllerBase
     {
-        private readonly Mediator _mediator;
+        private readonly IMediator _mediator;
 
-        public ReviewController(Mediator mediator)
+        public ReviewController(IMediator mediator)
         {
             this._mediator = mediator;
         }
@@ -36,7 +37,9 @@ namespace Restaurant.Api.Controllers
 
         // POST api/<ReviewController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateReviewDto reviewDto)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateReviewDto reviewDto)
         {
             var command = await _mediator.Send(new CreateReviewCommand { CreateReviewDto = reviewDto });
             return Ok(command);
@@ -44,7 +47,7 @@ namespace Restaurant.Api.Controllers
 
         // PUT api/<ReviewController>
         [HttpPut]
-        public async Task<ActionResult> Put([FromBody] UpdateReviewDto reviewDto)
+        public async Task<ActionResult<BaseCommandResponse>> Put([FromBody] UpdateReviewDto reviewDto)
         {
             var command = await _mediator.Send(new UpdateReviewCommand { UpdateReviewDto = reviewDto });
             return Ok(command);

@@ -1,8 +1,18 @@
+using Restaurant.MVC.Contracts;
+using Restaurant.MVC.Services;
+using Restaurant.MVC.Services.Base;
+using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpClient<IClient, Client>(cl => cl.BaseAddress = new Uri("https://localhost:44342"));
+//builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

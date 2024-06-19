@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.DTOs.BlogPost;
 using Restaurant.Application.Features.BlogPosts.Requests.Commands;
 using Restaurant.Application.Features.BlogPosts.Requests.Queries;
+using Restaurant.Application.Responses;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,9 +13,9 @@ namespace Restaurant.Api.Controllers
     [ApiController]
     public class BlogPostController : ControllerBase
     {
-        private readonly Mediator _mediator;
+        private readonly IMediator _mediator;
 
-        public BlogPostController(Mediator mediator)
+        public BlogPostController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -36,7 +37,9 @@ namespace Restaurant.Api.Controllers
 
         // POST api/<BlogPostController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateBlogPostDto blogPost)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateBlogPostDto blogPost)
         {
             var command = await _mediator.Send(new CreateBlogPostCommand { CreateBlogPostDto = blogPost });
             return Ok(command);
@@ -44,7 +47,7 @@ namespace Restaurant.Api.Controllers
 
         // PUT api/<BlogPostController>
         [HttpPut]
-        public async Task<ActionResult> Put([FromBody] UpdateBlogPostDto blogPost)
+        public async Task<ActionResult<BaseCommandResponse>> Put([FromBody] UpdateBlogPostDto blogPost)
         {
             var command = await _mediator.Send(new UpdateBlogPostCommand { UpdateBlogPostDto = blogPost });
             return Ok(command);

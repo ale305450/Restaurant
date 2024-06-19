@@ -12,7 +12,7 @@ namespace Restaurant.Application.DTOs.Review
     {
         public int UserId { get; set; }
         public UserDto User { get; set; }
-        public int ItemId { get; set; }
+        public int MenuItemId { get; set; }
         public MenuItemDto MenuItem { get; set; }
         public int Rating { get; set; }
     }

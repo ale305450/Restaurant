@@ -38,23 +38,24 @@ namespace Restaurant.Application.Features.Reservations.Handlers.Commands
                 response.Message = "Reservation update failed";
                 response.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
             }
-
-            var reservation = await _reservationRepository.Get(request.Id);
-            if (request.UpdateReservationDto != null)
+            else
             {
-                _mapper.Map(request.UpdateReservationDto, reservation);
+                var reservation = await _reservationRepository.Get(request.Id);
+                if (request.UpdateReservationDto != null)
+                {
+                    _mapper.Map(request.UpdateReservationDto, reservation);
 
-                await _reservationRepository.Update(reservation);
+                    await _reservationRepository.Update(reservation);
+                }
+                else if (request.ChangeReservationStatusDto != null)
+                {
+                    await _reservationRepository.ChangeReservationStatus(reservation, request.ChangeReservationStatusDto.Status);
+                }
+
+                response.Success = true;
+                response.Message = "Reservation updated successfully";
+                response.Id = reservation.Id;
             }
-            else if (request.ChangeReservationStatusDto != null)
-            {
-                await _reservationRepository.ChangeReservationStatus(reservation, request.ChangeReservationStatusDto.Status);
-            }
-
-            response.Success = true;
-            response.Message = "Reservation updated successfully";
-            response.Id = reservation.Id;
-
             return response;
         }
     }

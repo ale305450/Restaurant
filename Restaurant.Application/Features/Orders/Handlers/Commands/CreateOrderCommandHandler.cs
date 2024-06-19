@@ -45,15 +45,16 @@ namespace Restaurant.Application.Features.Orders.Handlers.Commands
                 response.Message = "Order creation failed";
                 response.Errors = validationResult.Errors.Select(e =>e.ErrorMessage).ToList();
             }
+            else
+            {
+                var order = _mapper.Map<Order>(request.CreateOrderDto);
 
-            var order = _mapper.Map<Order>(request.CreateOrderDto);
+                order = await _orderRepository.Add(order);
 
-            order = await _orderRepository.Add(order);
-
-            response.Success = true;
-            response.Message = "Order created successfully";
-            response.Id = order.Id;
-
+                response.Success = true;
+                response.Message = "Order created successfully";
+                response.Id = order.Id;
+            }
             return response;
         }
     }

@@ -38,15 +38,16 @@ namespace Restaurant.Application.Features.Users.Handlers.Commands
                 response.Message = "User creation failed";
                 response.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
             }
+            else
+            {
+                var user = _mapper.Map<User>(request.CreateUserDto);
 
-            var user = _mapper.Map<User>(request.CreateUserDto);
+                user = await _userRepository.Add(user);
 
-            user = await _userRepository.Add(user);
-
-            response.Success = true;
-            response.Message = "User created successfully";
-            response.Id = user.Id;
-
+                response.Success = true;
+                response.Message = "User created successfully";
+                response.Id = user.Id;
+            }
             return response;
         }
     }

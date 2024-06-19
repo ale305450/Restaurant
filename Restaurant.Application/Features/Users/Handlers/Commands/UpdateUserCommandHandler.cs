@@ -39,17 +39,18 @@ namespace Restaurant.Application.Features.Users.Handlers.Commands
                 response.Message = "User update failed";
                 response.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
             }
+            else
+            {
+                var menuItem = await _userRepository.Get(request.UpdateUserDto.Id);
 
-            var menuItem = await _userRepository.Get(request.UpdateUserDto.Id);
+                _mapper.Map(request.UpdateUserDto, menuItem);
 
-            _mapper.Map(request.UpdateUserDto, menuItem);
+                await _userRepository.Update(menuItem);
 
-            await _userRepository.Update(menuItem);
-
-            response.Success = true;
-            response.Message = "User updated successfully";
-            response.Id = menuItem.Id;
-
+                response.Success = true;
+                response.Message = "User updated successfully";
+                response.Id = menuItem.Id;
+            }
             return response;
         }
     }

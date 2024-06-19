@@ -39,17 +39,18 @@ namespace Restaurant.Application.Features.MenuItems.Handlers.Commands
                 response.Message = "MenuItem update failed";
                 response.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
             }
+            else
+            {
+                var menuItem = await _menuItemRepository.Get(request.UpdateMenuItemDto.Id);
 
-            var menuItem = await _menuItemRepository.Get(request.UpdateMenuItemDto.Id);
+                _mapper.Map(request.UpdateMenuItemDto, menuItem);
 
-            _mapper.Map(request.UpdateMenuItemDto, menuItem);
+                await _menuItemRepository.Update(menuItem);
 
-            await _menuItemRepository.Update(menuItem);
-
-            response.Success = true;
-            response.Message = "MenuItem updated successfully";
-            response.Id = menuItem.Id;
-
+                response.Success = true;
+                response.Message = "MenuItem updated successfully";
+                response.Id = menuItem.Id;
+            }
             return response;
         }
     }
