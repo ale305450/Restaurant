@@ -23,6 +23,10 @@ namespace Restaurant.Application.DTOs.MenuItem.Validators
                 .NotNull()
                 .LessThan(10000).WithMessage("{PropertyName} must not be above {ComparisonValue} Real")
                 .GreaterThan(500).WithMessage("{PropertyName} must not be less than {ComparisonValue} Real");
+
+            RuleFor(m => m.CategoryId)
+                .NotEmpty().WithMessage("{PropertyName} is required")
+                .NotNull();
         }
     }
 }

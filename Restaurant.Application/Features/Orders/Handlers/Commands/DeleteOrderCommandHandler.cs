@@ -34,7 +34,7 @@ namespace Restaurant.Application.Features.Orders.Handlers.Commands
 
 
             response.Success = true;
-            response.Message = "User Deleted successfully";
+            response.Message = "Order Deleted successfully";
             response.Id = order.Id;
 
             return response;

@@ -18,24 +18,20 @@ namespace Restaurant.Application.Features.Orders.Handlers.Commands
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
-        private readonly IMenuItemRepository _menuItemRepository;
-
 
         public CreateOrderCommandHandler(IOrderRepository orderRepository
             , IMapper mapper
-            , IMenuItemRepository menuItemRepository
             )
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
-            _menuItemRepository = menuItemRepository;
         }
 
         public async Task<BaseCommandResponse> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
 
-            var validator = new CreateOrderDtoValidator(_menuItemRepository);
+            var validator = new CreateOrderDtoValidator();
 
             var validationResult = await validator.ValidateAsync(request.CreateOrderDto);
 

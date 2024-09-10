@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Restaurant.Application.DTOs.Order.Validators;
 using Restaurant.Application.Features.Orders.Requests.Commands;
 using Restaurant.Application.Contracts.Presistence;
 using Restaurant.Application.Responses;
@@ -17,8 +16,6 @@ namespace Restaurant.Application.Features.Orders.Handlers.Commands
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
-        private readonly IMenuItemRepository _menuItemRepository;
-
 
         public UpdateOrderCommandHandler(IOrderRepository orderRepository
             , IMapper mapper
@@ -26,42 +23,23 @@ namespace Restaurant.Application.Features.Orders.Handlers.Commands
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
-            _menuItemRepository = menuItemRepository;
         }
 
         public async Task<BaseCommandResponse> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
 
-            var validator = new UpdateOrderDtoValidator(_menuItemRepository);
 
-            var validationResult = await validator.ValidateAsync(request.UpdateOrderDto);
-
-            if (validationResult.IsValid == false)
+            var order = await _orderRepository.Get(request.Id);
+            if (request.ChangeOrderStatusDto != null)
             {
-                response.Success = false;
-                response.Message = "Order update failed";
-                response.Errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                await _orderRepository.ChangeOrderStatus(order, request.ChangeOrderStatusDto.Status);
             }
-            else
-            {
-                var order = await _orderRepository.Get(request.Id);
 
-                if (request.UpdateOrderDto != null)
-                {
-                    _mapper.Map(request.UpdateOrderDto, order);
+            response.Success = true;
+            response.Message = "Order updated successfully";
+            response.Id = order.Id;
 
-                    await _orderRepository.Update(order);
-                }
-                else if (request.ChangeOrderStatusDto != null)
-                {
-                    await _orderRepository.ChangeOrderStatus(order, request.ChangeOrderStatusDto.Status);
-                }
-
-                response.Success = true;
-                response.Message = "Order updated successfully";
-                response.Id = order.Id;
-            }
             return response;
         }
     }

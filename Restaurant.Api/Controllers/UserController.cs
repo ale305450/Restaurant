@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.DTOs.User;
 using Restaurant.Application.Features.Users.Requests.Commands;
@@ -11,6 +12,7 @@ namespace Restaurant.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -29,33 +31,15 @@ namespace Restaurant.Api.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDto>> Get(int id)
+        public async Task<ActionResult<UserDto>> Get(string id)
         {
-            var user = await _mediator.Send(new GetUserDetaliRequest { Id = id });
+            var user = await _mediator.Send(new GetUserDetailRequest { Id = id });
             return Ok(user);
-        }
-
-        // POST api/<UserController>
-        [HttpPost]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateUserDto userDto)
-        {
-            var command = await _mediator.Send(new CreateUserCommand { CreateUserDto = userDto });
-            return Ok(command);
-        }
-
-        // PUT api/<UserController>
-        [HttpPut]
-        public async Task<ActionResult<BaseCommandResponse>> Put([FromBody] UpdateUserDto userDto)
-        {
-            var command = await _mediator.Send(new UpdateUserCommand { UpdateUserDto = userDto });
-            return Ok(command);
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
             await _mediator.Send(new DeleteUserCommand { Id = id });
             return NoContent();

@@ -10,6 +10,7 @@ namespace Restaurant.Application.Contracts.Presistence
     {
         Task<Order> GetOrderRequestWithDetails(int id);
         Task<List<Order>> GetOrderRequestWithDetails();
+        Task<List<Order>> GetCurrentUserOrders(string userId);
         Task ChangeOrderStatus(Order order , string status);
     }
 }

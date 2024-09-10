@@ -3,6 +3,7 @@ using Restaurant.Application.Contracts.Presistence;
 using Restaurant.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,10 +24,18 @@ namespace Restaurant.Presistence.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<List<Order>> GetCurrentUserOrders(string userId)
+        {
+            var orders = await _dbContext.Order
+                           .Include(o => o.User)
+                           .Where(userOrder => userOrder.UserId == userId)
+                           .ToListAsync();
+            return orders;
+        }
+
         public async Task<Order> GetOrderRequestWithDetails(int id)
         {
             var order = await _dbContext.Order
-                .Include( o=> o.MenuItem)
                 .Include(o=> o.User)
                 .FirstOrDefaultAsync(o => o.Id == id);
             return order;
@@ -35,7 +44,6 @@ namespace Restaurant.Presistence.Repositories
         public async Task<List<Order>> GetOrderRequestWithDetails()
         {
             var orders = await _dbContext.Order
-                .Include(o => o.MenuItem)
                 .Include(o => o.User)
                 .ToListAsync();
             return orders;

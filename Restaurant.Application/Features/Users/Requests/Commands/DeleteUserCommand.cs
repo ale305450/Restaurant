@@ -8,6 +8,6 @@ namespace Restaurant.Application.Features.Users.Requests.Commands
 {
     public class DeleteUserCommand : IRequest<BaseCommandResponse>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
     }
 }

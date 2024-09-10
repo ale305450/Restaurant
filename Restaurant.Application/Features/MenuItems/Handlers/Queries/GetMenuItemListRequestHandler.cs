@@ -23,7 +23,7 @@ namespace Restaurant.Application.Features.MenuItems.Handlers.Queries
         }
         public async Task<List<MenuItemDto>> Handle(GetMenuItemListRequest request, CancellationToken cancellationToken)
         {
-            var menuItems = await _menuItemRepository.GetAll();
+            var menuItems = await _menuItemRepository.GetMenuItemRequestWithDetails();
             return _mapper.Map<List<MenuItemDto>>(menuItems);
         }
     }

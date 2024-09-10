@@ -32,7 +32,7 @@ namespace Restaurant.Application.Features.Users.Handlers.Commands
 
             response.Success = true;
             response.Message = "User Deleted successfully";
-            response.Id = user.Id;
+            response.Id = Convert.ToInt32(user.Id);
 
             return response;
         }

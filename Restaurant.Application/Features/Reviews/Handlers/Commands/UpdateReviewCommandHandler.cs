@@ -40,7 +40,7 @@ namespace Restaurant.Application.Features.Reviews.Handlers.Commands
             }
             else
             {
-                var review = await _reviewRepository.Get(request.UpdateReviewDto.Id);
+                var review = await _reviewRepository.Get(request.Id);
 
                 _mapper.Map(request.UpdateReviewDto, review);
 

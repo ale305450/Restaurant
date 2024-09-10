@@ -7,8 +7,8 @@ namespace Restaurant.Domain
 {
     public class Reservation: BaseDomainEntity
     {
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
         public DateTime Date { get; set; }
         public TimeSpan Time { get; set; }
         public int NumGuests { get; set; }

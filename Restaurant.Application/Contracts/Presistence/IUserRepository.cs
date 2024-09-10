@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Restaurant.Application.Contracts.Presistence
 {
-    public interface IUserRepository : IGenericRepository<User>
+    public interface IUserRepository : IGenericRepository<ApplicationUser>
     {
-       
+        Task<ApplicationUser> Get(string id);
+
     }
 }

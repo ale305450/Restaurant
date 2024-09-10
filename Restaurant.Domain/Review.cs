@@ -7,8 +7,8 @@ namespace Restaurant.Domain
 {
     public class Review: BaseDomainEntity
     {
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
         public int MenuItemId { get; set; }
         public MenuItem MenuItem { get; set; }
         public int Rating { get; set; }

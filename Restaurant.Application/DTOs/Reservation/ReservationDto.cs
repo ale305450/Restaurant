@@ -8,7 +8,7 @@ namespace Restaurant.Application.DTOs.Reservation
 {
     public class ReservationDto : BaseDto
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public UserDto User { get; set; }
         public DateTime Date { get; set; }
         public TimeSpan Time { get; set; }

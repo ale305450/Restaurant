@@ -1,21 +1,17 @@
 ﻿using FluentValidation;
-using Restaurant.Application.Contracts.Presistence;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Restaurant.Application.DTOs.Order.Validators
 {
     public class CreateOrderDtoValidator : AbstractValidator<CreateOrderDto>
     {
-        private readonly IMenuItemRepository _menuItemRepository;
-
-        public CreateOrderDtoValidator(IMenuItemRepository menuItemRepository)
+        public CreateOrderDtoValidator()
         {
-            _menuItemRepository = menuItemRepository;
-
-            Include(new IOrderDtoValidator(_menuItemRepository));
+            Include(new IOrderDtoValidator());
         }
-
     }
 }

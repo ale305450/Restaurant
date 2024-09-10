@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.DTOs.BlogPost;
 using Restaurant.Application.Features.BlogPosts.Requests.Commands;
@@ -31,11 +32,12 @@ namespace Restaurant.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BlogPostDto>> Get(int id)
         {
-            var blogPost = await _mediator.Send(new GetBlogPostDetaliRequest { Id = id });
+            var blogPost = await _mediator.Send(new GetBlogPostDetailRequest { Id = id });
             return Ok(blogPost);
         }
 
         // POST api/<BlogPostController>
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -47,14 +49,16 @@ namespace Restaurant.Api.Controllers
 
         // PUT api/<BlogPostController>
         [HttpPut]
-        public async Task<ActionResult<BaseCommandResponse>> Put([FromBody] UpdateBlogPostDto blogPost)
+        [Authorize]
+        public async Task<ActionResult<BaseCommandResponse>> Put(int id,[FromBody] UpdateBlogPostDto blogPost)
         {
-            var command = await _mediator.Send(new UpdateBlogPostCommand { UpdateBlogPostDto = blogPost });
+            var command = await _mediator.Send(new UpdateBlogPostCommand { Id = id ,UpdateBlogPostDto = blogPost });
             return Ok(command);
         }
 
         // DELETE api/<BlogPostController>/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
             await _mediator.Send(new DeleteBlogPostCommand { Id = id });

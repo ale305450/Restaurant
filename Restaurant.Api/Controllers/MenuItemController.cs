@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.DTOs.MenuItem;
 using Restaurant.Application.Features.MenuItems.Requests.Commands;
@@ -31,7 +32,7 @@ namespace Restaurant.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<MenuItemDto>> Get(int id)
         {
-            var item = await _mediator.Send(new GetMenuItemDetaliRequest { Id = id });
+            var item = await _mediator.Send(new GetMenuItemDetailRequest { Id = id });
             return Ok(item);
         }
 
@@ -39,22 +40,35 @@ namespace Restaurant.Api.Controllers
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
+        [Authorize]
         public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateMenuItemDto itemDto)
         {
+            using var memoryStream = new MemoryStream();
+
+            await itemDto.UploadedImage.CopyToAsync(memoryStream);
+
+            itemDto.Image = memoryStream.ToArray();
             var command = await _mediator.Send(new CreateMenuItemCommand { CreateMenuItemDto = itemDto });
             return Ok(command);
         }
 
         // PUT api/<MenuItemController>
         [HttpPut]
-        public async Task<ActionResult<BaseCommandResponse>> Put([FromBody] UpdateMenuItemDto itemDto)
+        [Authorize]
+        public async Task<ActionResult<BaseCommandResponse>> Put(int id, [FromBody] UpdateMenuItemDto itemDto)
         {
-            var command = await _mediator.Send(new UpdateMenuItemCommand { UpdateMenuItemDto = itemDto });
+            using var memoryStream = new MemoryStream();
+
+            await itemDto.UploadedImage.CopyToAsync(memoryStream);
+
+            itemDto.Image = memoryStream.ToArray();
+            var command = await _mediator.Send(new UpdateMenuItemCommand { Id = id,UpdateMenuItemDto = itemDto });
             return Ok(command);
         }
 
         // DELETE api/<MenuItemController>/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
             await _mediator.Send(new DeleteMenuItemCommand { Id = id });

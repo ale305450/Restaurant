@@ -41,7 +41,6 @@ namespace Restaurant.Application.Features.MenuItems.Handlers.Commands
             else
             {
                 var menuItem = _mapper.Map<MenuItem>(request.CreateMenuItemDto);
-
                 menuItem = await _menuItemRepository.Add(menuItem);
 
                 response.Success = true;

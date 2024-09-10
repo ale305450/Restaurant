@@ -6,7 +6,7 @@ namespace Restaurant.Application.DTOs.Review
 {
     public class UpdateReviewDto : BaseDto, IReviewDto
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int MenuItemId { get; set; }
         public int Rating { get; set; }
     }

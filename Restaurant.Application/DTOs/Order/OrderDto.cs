@@ -10,12 +10,8 @@ namespace Restaurant.Application.DTOs.Order
 {
     public class OrderDto : BaseDto
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public UserDto User { get; set; }
-        public int MenuItemId { get; set; }
-        public CreateMenuItemDto MenuItem { get; set; }
-        public int Quantity { get; set; }
-        public decimal TotalCost { get; set; }
         public string Status { get; set; }
 
     }

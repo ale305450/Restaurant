@@ -7,13 +7,10 @@ namespace Restaurant.Domain
 {
     public class Order: BaseDomainEntity
     {
-        public int UserId { get; set; }
-        public User User { get; set; }
-        public int MenuItemId { get; set; }
-        public MenuItem MenuItem { get; set; }
-        public int Quantity { get; set; }
-        public decimal TotalCost { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
         public string Status { get; set; }
+        public ICollection<OrderDetails> OrderDetails { get; set; }
 
     }
 }

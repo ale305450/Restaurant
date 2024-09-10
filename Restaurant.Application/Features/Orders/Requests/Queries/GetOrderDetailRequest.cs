@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Restaurant.Application.Features.Orders.Requests.Queries
 {
-    public class GetOrderDetailRequest :IRequest<OrderDto>
+    public class GetOrderDetailRequest : IRequest<OrderDto>
     {
         public int Id { get; set; }
     }

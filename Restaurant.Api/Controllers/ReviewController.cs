@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.DTOs.Review;
 using Restaurant.Application.Features.Reviews.Requests.Commands;
@@ -11,6 +12,7 @@ namespace Restaurant.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ReviewController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -47,9 +49,9 @@ namespace Restaurant.Api.Controllers
 
         // PUT api/<ReviewController>
         [HttpPut]
-        public async Task<ActionResult<BaseCommandResponse>> Put([FromBody] UpdateReviewDto reviewDto)
+        public async Task<ActionResult<BaseCommandResponse>> Put(int id, [FromBody] UpdateReviewDto reviewDto)
         {
-            var command = await _mediator.Send(new UpdateReviewCommand { UpdateReviewDto = reviewDto });
+            var command = await _mediator.Send(new UpdateReviewCommand { Id = id,UpdateReviewDto = reviewDto });
             return Ok(command);
         }
     }

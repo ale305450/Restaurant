@@ -9,6 +9,7 @@ namespace Restaurant.Application.Features.Reviews.Requests.Commands
 {
     public class UpdateReviewCommand : IRequest<BaseCommandResponse>
     {
+        public int Id { get; set; }
         public UpdateReviewDto UpdateReviewDto { get; set; }
     }
 }

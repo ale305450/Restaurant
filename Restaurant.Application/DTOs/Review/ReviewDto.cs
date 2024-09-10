@@ -10,7 +10,7 @@ namespace Restaurant.Application.DTOs.Review
 {
     public class ReviewDto : BaseDto
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public UserDto User { get; set; }
         public int MenuItemId { get; set; }
         public MenuItemDto MenuItem { get; set; }

@@ -42,6 +42,7 @@ namespace Restaurant.Application.Features.BlogPosts.Handlers.Commands
             else
             {
                 var blogPost = _mapper.Map<BlogPost>(request.CreateBlogPostDto);
+                blogPost.PublicationDate = DateTime.Now;    
 
                 blogPost = await _blogPostRepository.Add(blogPost);
 

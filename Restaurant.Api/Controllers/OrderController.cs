@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.DTOs.Order;
 using Restaurant.Application.Features.Orders.Requests.Commands;
@@ -11,6 +12,7 @@ namespace Restaurant.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -35,6 +37,14 @@ namespace Restaurant.Api.Controllers
             return Ok(order);
         }
 
+        // GET api/<OrderController>/5
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<OrderDto>> GetUserOrders(string userId)
+        {
+            var order = await _mediator.Send(new GetUserOrdersListRequest { UserId = userId });
+            return Ok(order);
+        }
+
         // POST api/<OrderController>
         [HttpPost]
         [ProducesResponseType(200)]
@@ -45,13 +55,6 @@ namespace Restaurant.Api.Controllers
             return Ok(command);
         }
 
-        // PUT api/<OrderController>/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<BaseCommandResponse>> Put(int id, [FromBody] UpdateOrderDto orderDto)
-        {
-            var command = await _mediator.Send(new UpdateOrderCommand { Id = id, UpdateOrderDto = orderDto });
-            return Ok(command);
-        }
         // PUT api/<OrderController>/changestatus/5
         [HttpPut("changestatus/{id}")]
         public async Task<ActionResult> ChangeStatus(int id, [FromBody] ChangeOrderStatusDto orderStatusDto)

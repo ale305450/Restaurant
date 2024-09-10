@@ -39,7 +39,7 @@ namespace Restaurant.Application.Features.BlogPosts.Handlers.Commands
             }
             else
             {
-                var blogPost = await _blogPostRepository.Get(request.UpdateBlogPostDto.Id);
+                var blogPost = await _blogPostRepository.Get(request.Id);
 
                 _mapper.Map(request.UpdateBlogPostDto, blogPost);
 
